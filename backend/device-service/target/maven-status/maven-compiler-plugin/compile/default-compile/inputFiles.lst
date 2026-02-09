@@ -1,0 +1,10 @@
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\infrastructure\adapter\out\persistence\DevicePersistenceAdapter.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\infrastructure\config\DeviceConfig.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\application\ports\out\DeviceRepositoryPort.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\infrastructure\adapter\out\persistence\DeviceJpaEntity.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\domain\model\Device.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\application\ports\in\DeviceUseCases.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\infrastructure\adapter\in\rest\DeviceRestController.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\infrastructure\adapter\out\persistence\DeviceJpaRepository.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\DeviceServiceApplication.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\device-service\src\main\java\com\dispositivos\device\application\usecase\DeviceService.java

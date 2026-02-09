@@ -1,0 +1,61 @@
+/* Estilos globales - Dispositivos Inteligentes */
+:root {
+  --primary: #0d6efd;
+  --secondary: #6c757d;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+  color: white;
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card {
+  border: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+  background: #e9ecef;
+}
+
+.btn-primary {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+}
+
+.btn-primary:hover {
+  background: #2d5a87;
+  border-color: #2d5a87;
+}
+
+.device-detail-image {
+  max-height: 400px;
+  object-fit: contain;
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+.comment-card {
+  border-left: 4px solid #1e3a5f;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 0.2rem rgba(30, 58, 95, 0.25);
+}

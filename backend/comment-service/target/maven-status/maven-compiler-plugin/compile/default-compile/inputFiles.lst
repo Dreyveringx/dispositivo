@@ -1,0 +1,10 @@
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\application\usecase\CommentService.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\infrastructure\adapter\out\persistence\CommentJpaEntity.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\infrastructure\adapter\out\persistence\CommentPersistenceAdapter.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\domain\model\Comment.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\infrastructure\config\CommentConfig.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\application\ports\out\CommentRepositoryPort.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\CommentServiceApplication.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\application\ports\in\CommentUseCases.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\infrastructure\adapter\in\rest\CommentRestController.java
+C:\Users\jair.uribe\UNIPRUEBA\back\AA2_DispositivosInteligentes\backend\comment-service\src\main\java\com\dispositivos\comment\infrastructure\adapter\out\persistence\CommentJpaRepository.java

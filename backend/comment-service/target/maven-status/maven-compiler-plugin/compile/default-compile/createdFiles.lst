@@ -1,0 +1,11 @@
+com\dispositivos\comment\infrastructure\adapter\out\persistence\CommentJpaRepository.class
+com\dispositivos\comment\application\usecase\CommentService.class
+com\dispositivos\comment\infrastructure\adapter\in\rest\CommentRestController.class
+com\dispositivos\comment\infrastructure\adapter\in\rest\CommentRestController$CommentRequest.class
+com\dispositivos\comment\application\ports\in\CommentUseCases.class
+com\dispositivos\comment\infrastructure\adapter\out\persistence\CommentJpaEntity.class
+com\dispositivos\comment\application\ports\out\CommentRepositoryPort.class
+com\dispositivos\comment\domain\model\Comment.class
+com\dispositivos\comment\infrastructure\config\CommentConfig.class
+com\dispositivos\comment\CommentServiceApplication.class
+com\dispositivos\comment\infrastructure\adapter\out\persistence\CommentPersistenceAdapter.class
