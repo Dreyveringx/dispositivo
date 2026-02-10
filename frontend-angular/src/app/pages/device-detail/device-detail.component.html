@@ -1,0 +1,88 @@
+<a routerLink="/" class="btn btn-outline-secondary mb-3">← Volver al listado</a>
+
+<!-- Estado de carga -->
+<div *ngIf="loading" class="text-center py-5">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<!-- Detalle del dispositivo -->
+<div *ngIf="!loading && device" class="row">
+  <div class="col-lg-5 mb-4">
+    <!-- Visor principal con zoom y pan -->
+    <div
+      #viewerContainer
+      class="device-image-viewer border rounded bg-light overflow-hidden position-relative"
+      [class.viewer-grab]="!isDragging && zoomLevel > 1"
+      [class.viewer-grabbing]="isDragging"
+      (wheel)="onViewerWheel($event)"
+      (mousedown)="onViewerMouseDown($event)"
+    >
+      <div class="viewer-inner" [style.transform]="getViewerTransform()">
+        <img
+          [src]="selectedImage || placeholderImage"
+          class="device-main-image"
+          [alt]="device.name"
+          (error)="$any($event.target).src = placeholderImage"
+          draggable="false"
+        />
+      </div>
+      <div class="viewer-zoom-controls">
+        <button type="button" class="btn btn-light btn-sm shadow-sm" (click)="zoomIn()" title="Acercar">Zoom +</button>
+        <button type="button" class="btn btn-light btn-sm shadow-sm" (click)="zoomOut()" title="Alejar">Zoom −</button>
+        <button type="button" class="btn btn-light btn-sm shadow-sm" (click)="resetZoom()" title="Restablecer">Reset</button>
+      </div>
+    </div>
+    <!-- Galería de miniaturas -->
+    <div class="thumbnails-row mt-2 d-flex flex-wrap gap-2" *ngIf="allImages.length > 0">
+      <button
+        type="button"
+        class="thumbnail-btn p-0 border rounded overflow-hidden"
+        [class.thumbnail-active]="selectedImage === url"
+        *ngFor="let url of allImages"
+        (click)="selectImage(url)"
+      >
+        <img [src]="url" class="thumbnail-img" [alt]="device.name + ' miniatura'" (error)="$any($event.target).src = placeholderImage" />
+      </button>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <h1 class="h2">{{ device.name }}</h1>
+    <p class="text-muted" *ngIf="brandName">Marca: {{ brandName }}</p>
+    <p class="text-muted" *ngIf="typeName">Tipo: {{ typeName }}</p>
+    <p class="text-muted" *ngIf="device.releaseDate">Fecha de lanzamiento: {{ device.releaseDate | date:'longDate' }}</p>
+    <div class="mt-3" *ngIf="device.description">
+      <h5>Descripción</h5>
+      <p class="text-body">{{ device.description }}</p>
+    </div>
+  </div>
+</div>
+
+<hr class="my-5" *ngIf="device" />
+
+<!-- Sección de comentarios -->
+<section *ngIf="device">
+  <h4 class="mb-3">Comentarios ({{ comments.length }})</h4>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <form (ngSubmit)="submitComment()" #f="ngForm">
+        <div class="mb-2">
+          <input type="text" class="form-control" placeholder="Tu nombre" [(ngModel)]="newComment.author" name="author" required />
+        </div>
+        <div class="mb-2">
+          <textarea class="form-control" rows="3" placeholder="Escribe tu comentario..." [(ngModel)]="newComment.text" name="text" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid || submitting">Enviar comentario</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="comment-card card mb-2" *ngFor="let c of comments">
+    <div class="card-body py-3">
+      <strong>{{ c.author }}</strong>
+      <span class="text-muted small ms-2">{{ c.createdAt | date:'short' }}</span>
+      <p class="mb-0 mt-1">{{ c.text }}</p>
+    </div>
+  </div>
+  <p *ngIf="comments.length === 0" class="text-muted">Aún no hay comentarios. ¡Sé el primero!</p>
+</section>
