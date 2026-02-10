@@ -1,7 +1,15 @@
 package com.dispositivos.catalog.infrastructure.adapter.in.rest;
 
 import com.dispositivos.catalog.application.ports.in.DeviceTypeUseCases;
-import com.dispositivos.catalog.domain.model.DeviceType;
+import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.DeviceTypeRequest;
+import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.DeviceTypeResponse;
+import com.dispositivos.catalog.infrastructure.adapter.in.rest.mapper.DeviceTypeMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,57 +17,71 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/device-types")
-@CrossOrigin(origins = "*")
+@RequestMapping(ApiRoutes.DEVICE_TYPES)
+@RequiredArgsConstructor
+@Tag(name = "Device Types", description = "CRUD de tipos de dispositivo")
 public class DeviceTypeRestController {
 
     private final DeviceTypeUseCases deviceTypeUseCases;
 
-    public DeviceTypeRestController(DeviceTypeUseCases deviceTypeUseCases) {
-        this.deviceTypeUseCases = deviceTypeUseCases;
-    }
-
     @PostMapping
-    public ResponseEntity<DeviceType> create(@RequestBody DeviceTypeRequest request) {
-        DeviceType created = deviceTypeUseCases.create(request.getName(), request.getDescription());
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    @Operation(summary = "Crear tipo de dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Tipo creado"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<DeviceTypeResponse> create(@Valid @RequestBody DeviceTypeRequest request) {
+        var created =
+                deviceTypeUseCases.create(request.getName(), request.getDescription());
+        return ResponseEntity.status(HttpStatus.CREATED).body(DeviceTypeMapper.toResponse(created));
     }
 
     @GetMapping
-    public ResponseEntity<List<DeviceType>> findAll() {
-        return ResponseEntity.ok(deviceTypeUseCases.findAll());
+    @Operation(summary = "Listar todos los tipos de dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de tipos")
+    })
+    public ResponseEntity<List<DeviceTypeResponse>> findAll() {
+        return ResponseEntity.ok(DeviceTypeMapper.toResponseList(deviceTypeUseCases.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DeviceType> findById(@PathVariable Long id) {
+    @Operation(summary = "Obtener tipo por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tipo encontrado"),
+            @ApiResponse(responseCode = "404", description = "Tipo no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<DeviceTypeResponse> findById(@PathVariable Long id) {
         return deviceTypeUseCases.findById(id)
+                .map(DeviceTypeMapper::toResponse)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DeviceType> update(@PathVariable Long id, @RequestBody DeviceTypeRequest request) {
-        try {
-            DeviceType updated = deviceTypeUseCases.update(id, request.getName(), request.getDescription());
-            return ResponseEntity.ok(updated);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @Operation(summary = "Actualizar tipo de dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tipo actualizado"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
+            @ApiResponse(responseCode = "404", description = "Tipo no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<DeviceTypeResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody DeviceTypeRequest request) {
+        var updated =
+                deviceTypeUseCases.update(id, request.getName(), request.getDescription());
+        return ResponseEntity.ok(DeviceTypeMapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar tipo de dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Tipo eliminado"),
+            @ApiResponse(responseCode = "404", description = "Tipo no encontrado (RFC 7807 Problem Detail)")
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         deviceTypeUseCases.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    public static class DeviceTypeRequest {
-        private String name;
-        private String description;
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getDescription() { return description; }
-        public void setDescription(String description) { this.description = description; }
     }
 }

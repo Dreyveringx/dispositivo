@@ -10,6 +10,12 @@
   </div>
 </header>
 <main class="container mb-5">
+  @if (errorService.hasError()) {
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+      {{ errorService.getDisplayMessage(errorService.currentError()) }}
+      <button type="button" class="btn-close" aria-label="Cerrar" (click)="errorService.clear()"></button>
+    </div>
+  }
   <router-outlet></router-outlet>
 </main>
 <footer class="text-center text-muted py-3 small border-top">

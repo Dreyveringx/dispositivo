@@ -2,14 +2,12 @@ package com.dispositivos.catalog.application.usecase;
 
 import com.dispositivos.catalog.application.ports.in.DeviceTypeUseCases;
 import com.dispositivos.catalog.application.ports.out.DeviceTypeRepositoryPort;
+import com.dispositivos.catalog.domain.exception.ResourceNotFoundException;
 import com.dispositivos.catalog.domain.model.DeviceType;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Casos de uso de Tipos de dispositivo.
- */
 public class DeviceTypeService implements DeviceTypeUseCases {
 
     private final DeviceTypeRepositoryPort deviceTypeRepository;
@@ -37,7 +35,7 @@ public class DeviceTypeService implements DeviceTypeUseCases {
     @Override
     public DeviceType update(Long id, String name, String description) {
         DeviceType existing = deviceTypeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tipo de dispositivo no encontrado: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de dispositivo", id));
         existing.setName(name);
         existing.setDescription(description);
         return deviceTypeRepository.save(existing);

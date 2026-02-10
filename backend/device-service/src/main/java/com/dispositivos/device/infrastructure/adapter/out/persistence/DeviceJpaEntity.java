@@ -6,11 +6,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entidad JPA para Device. Las imágenes adicionales se guardan como texto separado por comas
- * o en una tabla separada; para simplicidad usamos un único campo JSON-like o concatenado.
- * Usamos @ElementCollection para lista de URLs.
- */
 @Entity
 @Table(name = "devices")
 public class DeviceJpaEntity {

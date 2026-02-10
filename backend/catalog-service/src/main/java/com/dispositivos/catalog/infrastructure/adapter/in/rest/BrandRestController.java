@@ -1,68 +1,85 @@
 package com.dispositivos.catalog.infrastructure.adapter.in.rest;
 
 import com.dispositivos.catalog.application.ports.in.BrandUseCases;
-import com.dispositivos.catalog.domain.model.Brand;
+import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.BrandRequest;
+import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.BrandResponse;
+import com.dispositivos.catalog.infrastructure.adapter.in.rest.mapper.BrandMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Adaptador de entrada REST: expone el puerto BrandUseCases como API HTTP.
- */
 @RestController
-@RequestMapping("/api/brands")
-@CrossOrigin(origins = "*")
+@RequestMapping(ApiRoutes.BRANDS)
+@RequiredArgsConstructor
+@Tag(name = "Brands", description = "CRUD de marcas")
 public class BrandRestController {
 
     private final BrandUseCases brandUseCases;
 
-    public BrandRestController(BrandUseCases brandUseCases) {
-        this.brandUseCases = brandUseCases;
-    }
-
     @PostMapping
-    public ResponseEntity<Brand> create(@RequestBody BrandRequest request) {
-        Brand created = brandUseCases.create(request.getName(), request.getDescription());
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    @Operation(summary = "Crear marca")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Marca creada"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<BrandResponse> create(@Valid @RequestBody BrandRequest request) {
+        var created = brandUseCases.create(request.getName(), request.getDescription());
+        return ResponseEntity.status(HttpStatus.CREATED).body(BrandMapper.toResponse(created));
     }
 
     @GetMapping
-    public ResponseEntity<List<Brand>> findAll() {
-        return ResponseEntity.ok(brandUseCases.findAll());
+    @Operation(summary = "Listar todas las marcas")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de marcas")
+    })
+    public ResponseEntity<List<BrandResponse>> findAll() {
+        return ResponseEntity.ok(BrandMapper.toResponseList(brandUseCases.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Brand> findById(@PathVariable Long id) {
+    @Operation(summary = "Obtener marca por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Marca encontrada"),
+            @ApiResponse(responseCode = "404", description = "Marca no encontrada (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<BrandResponse> findById(@PathVariable Long id) {
         return brandUseCases.findById(id)
+                .map(BrandMapper::toResponse)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> update(@PathVariable Long id, @RequestBody BrandRequest request) {
-        try {
-            Brand updated = brandUseCases.update(id, request.getName(), request.getDescription());
-            return ResponseEntity.ok(updated);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @Operation(summary = "Actualizar marca")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Marca actualizada"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
+            @ApiResponse(responseCode = "404", description = "Marca no encontrada (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<BrandResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody BrandRequest request) {
+        var updated = brandUseCases.update(id, request.getName(), request.getDescription());
+        return ResponseEntity.ok(BrandMapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar marca")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Marca eliminada"),
+            @ApiResponse(responseCode = "404", description = "Marca no encontrada (RFC 7807 Problem Detail)")
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         brandUseCases.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    public static class BrandRequest {
-        private String name;
-        private String description;
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getDescription() { return description; }
-        public void setDescription(String description) { this.description = description; }
     }
 }

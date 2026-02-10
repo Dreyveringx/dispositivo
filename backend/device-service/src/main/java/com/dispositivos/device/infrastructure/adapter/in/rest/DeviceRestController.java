@@ -1,31 +1,39 @@
 package com.dispositivos.device.infrastructure.adapter.in.rest;
 
 import com.dispositivos.device.application.ports.in.DeviceUseCases;
-import com.dispositivos.device.domain.model.Device;
+import com.dispositivos.device.infrastructure.adapter.in.rest.dto.DeviceRequest;
+import com.dispositivos.device.infrastructure.adapter.in.rest.dto.DeviceResponse;
+import com.dispositivos.device.infrastructure.adapter.in.rest.mapper.DeviceMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Adaptador de entrada REST para dispositivos.
- * GET /api/devices?name=...&brandId=...&deviceTypeId=...&sortByReleaseDate=true
- */
 @RestController
-@RequestMapping("/api/devices")
-@CrossOrigin(origins = "*")
+@RequestMapping(ApiRoutes.DEVICES)
+@RequiredArgsConstructor
+@Tag(name = "Devices", description = "CRUD de dispositivos inteligentes")
 public class DeviceRestController {
 
     private final DeviceUseCases deviceUseCases;
 
-    public DeviceRestController(DeviceUseCases deviceUseCases) {
-        this.deviceUseCases = deviceUseCases;
-    }
-
     @PostMapping
-    public ResponseEntity<Device> create(@RequestBody DeviceRequest request) {
-        Device created = deviceUseCases.create(
+    @Operation(summary = "Crear dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Dispositivo creado"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<DeviceResponse> create(@Valid @RequestBody DeviceRequest request) {
+        var created = deviceUseCases.create(
                 request.getName(),
                 request.getDescription(),
                 request.getBrandId(),
@@ -34,72 +42,71 @@ public class DeviceRestController {
                 request.getImageUrl(),
                 request.getImageUrls()
         );
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(DeviceMapper.toResponse(created));
     }
 
     @GetMapping
-    public ResponseEntity<List<Device>> list(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Long brandId,
-            @RequestParam(required = false) Long deviceTypeId,
-            @RequestParam(required = false, defaultValue = "true") boolean sortByReleaseDate
+    @Operation(summary = "Listar dispositivos con filtros opcionales")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de dispositivos")
+    })
+    public ResponseEntity<List<DeviceResponse>> list(
+            @Parameter(description = "Filtrar por nombre (contiene)") @RequestParam(required = false) String name,
+            @Parameter(description = "Filtrar por ID de marca") @RequestParam(required = false) Long brandId,
+            @Parameter(description = "Filtrar por ID de tipo") @RequestParam(required = false) Long deviceTypeId,
+            @Parameter(description = "Ordenar por fecha de lanzamiento descendente") @RequestParam(defaultValue = "true") boolean sortByReleaseDate
     ) {
-        List<Device> list = deviceUseCases.findFiltered(name, brandId, deviceTypeId, sortByReleaseDate);
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(
+                DeviceMapper.toResponseList(
+                        deviceUseCases.findFiltered(name, brandId, deviceTypeId, sortByReleaseDate)
+                )
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Device> getById(@PathVariable Long id) {
+    @Operation(summary = "Obtener dispositivo por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Dispositivo encontrado"),
+            @ApiResponse(responseCode = "404", description = "Dispositivo no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<DeviceResponse> getById(@PathVariable Long id) {
         return deviceUseCases.findById(id)
+                .map(DeviceMapper::toResponse)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Device> update(@PathVariable Long id, @RequestBody DeviceRequest request) {
-        try {
-            Device updated = deviceUseCases.update(id,
-                    request.getName(),
-                    request.getDescription(),
-                    request.getBrandId(),
-                    request.getDeviceTypeId(),
-                    request.getReleaseDate(),
-                    request.getImageUrl(),
-                    request.getImageUrls());
-            return ResponseEntity.ok(updated);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @Operation(summary = "Actualizar dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Dispositivo actualizado"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
+            @ApiResponse(responseCode = "404", description = "Dispositivo no encontrado (RFC 7807 Problem Detail)")
+    })
+    public ResponseEntity<DeviceResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody DeviceRequest request) {
+        var updated = deviceUseCases.update(
+                id,
+                request.getName(),
+                request.getDescription(),
+                request.getBrandId(),
+                request.getDeviceTypeId(),
+                request.getReleaseDate(),
+                request.getImageUrl(),
+                request.getImageUrls()
+        );
+        return ResponseEntity.ok(DeviceMapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Dispositivo eliminado"),
+            @ApiResponse(responseCode = "404", description = "Dispositivo no encontrado (RFC 7807 Problem Detail)")
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         deviceUseCases.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    public static class DeviceRequest {
-        private String name;
-        private String description;
-        private Long brandId;
-        private Long deviceTypeId;
-        private java.time.LocalDate releaseDate;
-        private String imageUrl;
-        private List<String> imageUrls;
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getDescription() { return description; }
-        public void setDescription(String description) { this.description = description; }
-        public Long getBrandId() { return brandId; }
-        public void setBrandId(Long brandId) { this.brandId = brandId; }
-        public Long getDeviceTypeId() { return deviceTypeId; }
-        public void setDeviceTypeId(Long deviceTypeId) { this.deviceTypeId = deviceTypeId; }
-        public java.time.LocalDate getReleaseDate() { return releaseDate; }
-        public void setReleaseDate(java.time.LocalDate releaseDate) { this.releaseDate = releaseDate; }
-        public String getImageUrl() { return imageUrl; }
-        public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-        public List<String> getImageUrls() { return imageUrls; }
-        public void setImageUrls(List<String> imageUrls) { this.imageUrls = imageUrls; }
     }
 }

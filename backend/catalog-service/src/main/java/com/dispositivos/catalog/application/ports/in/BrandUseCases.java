@@ -5,10 +5,6 @@ import com.dispositivos.catalog.domain.model.Brand;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Puerto de entrada: casos de uso de Marcas.
- * El adaptador REST invocará estos casos de uso.
- */
 public interface BrandUseCases {
 
     Brand create(String name, String description);

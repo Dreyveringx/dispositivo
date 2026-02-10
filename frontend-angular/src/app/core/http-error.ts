@@ -1,0 +1,22 @@
+import { ProblemDetail } from '../models/problem-detail.model';
+import { getDisplayMessage } from './error-messages';
+
+/**
+ * Error thrown by the HTTP interceptor when the backend returns 4xx/5xx.
+ * Carries status and optional RFC 7807 ProblemDetail for UI display.
+ */
+export class AppHttpError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly problemDetail?: ProblemDetail | null
+  ) {
+    super(message);
+    this.name = 'AppHttpError';
+    Object.setPrototypeOf(this, AppHttpError.prototype);
+  }
+
+  get displayMessage(): string {
+    return getDisplayMessage(this.problemDetail ?? null, this.status) || this.message || 'Ha ocurrido un error';
+  }
+}

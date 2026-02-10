@@ -10,10 +10,6 @@ import com.dispositivos.catalog.infrastructure.adapter.out.persistence.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Configuración de beans: une puertos con adaptadores (inyección manual para mantener
- * el dominio libre de Spring).
- */
 @Configuration
 public class CatalogConfig {
 

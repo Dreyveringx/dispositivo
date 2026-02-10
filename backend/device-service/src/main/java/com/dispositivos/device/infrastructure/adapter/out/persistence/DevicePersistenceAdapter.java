@@ -65,9 +65,6 @@ public class DevicePersistenceAdapter implements DeviceRepositoryPort {
         return e;
     }
 
-    /**
-     * Mapeo JPA → Dominio. Defensivo: evita NPE si alguna colección o campo es null.
-     */
     private Device toDomain(DeviceJpaEntity entity) {
         if (entity == null) {
             return null;

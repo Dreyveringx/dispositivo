@@ -2,9 +2,7 @@ package com.dispositivos.comment.domain.model;
 
 import java.time.LocalDateTime;
 
-/**
- * Modelo de dominio: Comentario asociado a un dispositivo (deviceId es referencia lógica).
- */
+
 public class Comment {
 
     private Long id;

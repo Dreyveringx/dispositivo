@@ -2,6 +2,7 @@ package com.dispositivos.device.application.usecase;
 
 import com.dispositivos.device.application.ports.in.DeviceUseCases;
 import com.dispositivos.device.application.ports.out.DeviceRepositoryPort;
+import com.dispositivos.device.domain.exception.ResourceNotFoundException;
 import com.dispositivos.device.domain.model.Device;
 
 import java.time.LocalDate;
@@ -43,7 +44,7 @@ public class DeviceService implements DeviceUseCases {
     public Device update(Long id, String name, String description, Long brandId, Long deviceTypeId,
                         LocalDate releaseDate, String imageUrl, List<String> imageUrls) {
         Device existing = deviceRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Dispositivo no encontrado: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Dispositivo", id));
         existing.setName(name);
         existing.setDescription(description);
         existing.setBrandId(brandId);

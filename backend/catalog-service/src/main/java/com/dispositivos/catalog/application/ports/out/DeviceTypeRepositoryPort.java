@@ -5,9 +5,6 @@ import com.dispositivos.catalog.domain.model.DeviceType;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Puerto de salida: persistencia de Tipos de dispositivo.
- */
 public interface DeviceTypeRepositoryPort {
 
     DeviceType save(DeviceType deviceType);

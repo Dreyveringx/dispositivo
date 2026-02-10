@@ -5,9 +5,6 @@ import com.dispositivos.catalog.domain.model.DeviceType;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Puerto de entrada: casos de uso de Tipos de dispositivo.
- */
 public interface DeviceTypeUseCases {
 
     DeviceType create(String name, String description);

@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comment } from '../models/comment.model';
 
-const COMMENT_API = 'http://localhost:8082/api/comments';
+import { ApiRoutes } from '../core/api-routes';
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
@@ -11,10 +11,10 @@ export class CommentService {
   constructor(private http: HttpClient) {}
 
   getByDeviceId(deviceId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(COMMENT_API, { params: new HttpParams().set('deviceId', deviceId) });
+    return this.http.get<Comment[]>(ApiRoutes.comments, { params: new HttpParams().set('deviceId', deviceId) });
   }
 
   create(comment: Comment): Observable<Comment> {
-    return this.http.post<Comment>(COMMENT_API, comment);
+    return this.http.post<Comment>(ApiRoutes.comments, comment);
   }
 }

@@ -5,10 +5,6 @@ import com.dispositivos.catalog.domain.model.Brand;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Puerto de salida: persistencia de Marcas.
- * El dominio define el contrato; la infraestructura lo implementa con JPA.
- */
 public interface BrandRepositoryPort {
 
     Brand save(Brand brand);

@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * Adaptador de persistencia: traduce entre dominio (Brand) y JPA (BrandJpaEntity).
- */
 public class BrandPersistenceAdapter implements BrandRepositoryPort {
 
     private final BrandJpaRepository jpaRepository;
