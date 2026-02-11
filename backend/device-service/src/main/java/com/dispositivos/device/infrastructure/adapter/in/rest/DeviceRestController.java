@@ -89,8 +89,7 @@ public class DeviceRestController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar dispositivo")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Dispositivo eliminado"),
-            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE)
+            @ApiResponse(responseCode = "204", description = "Dispositivo eliminado")
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         deviceUseCases.deleteById(id);

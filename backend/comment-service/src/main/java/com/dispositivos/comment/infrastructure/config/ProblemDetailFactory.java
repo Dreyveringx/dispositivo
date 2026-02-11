@@ -13,8 +13,18 @@ public final class ProblemDetailFactory {
     private static final String DETAIL_VALIDATION = "One or more fields are invalid";
     private static final String TITLE_INTERNAL = "Internal server error";
     private static final String DETAIL_INTERNAL = "An unexpected error occurred";
+    private static final String TITLE_MISSING_PARAM = "Parámetro requerido faltante";
 
     private ProblemDetailFactory() {
+    }
+
+    public static ProblemDetail createMissingParameter(String parameterName, String instanceUri) {
+        String detail = "Falta el parámetro requerido: " + parameterName;
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
+        problem.setType(ProblemTypes.BAD_REQUEST);
+        problem.setTitle(TITLE_MISSING_PARAM);
+        problem.setInstance(URI.create(instanceUri));
+        return problem;
     }
 
     public static ProblemDetail createNotFound(String detail, String instanceUri) {

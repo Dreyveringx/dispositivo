@@ -76,8 +76,7 @@ public class BrandRestController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar marca")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Marca eliminada"),
-            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_BRAND)
+            @ApiResponse(responseCode = "204", description = "Marca eliminada")
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         brandUseCases.deleteById(id);
