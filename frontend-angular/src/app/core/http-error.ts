@@ -1,10 +1,6 @@
 import { ProblemDetail } from '../models/problem-detail.model';
 import { getDisplayMessage } from './error-messages';
 
-/**
- * Error thrown by the HTTP interceptor when the backend returns 4xx/5xx.
- * Carries status and optional RFC 7807 ProblemDetail for UI display.
- */
 export class AppHttpError extends Error {
   constructor(
     message: string,

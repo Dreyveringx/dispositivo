@@ -2,12 +2,9 @@ package com.dispositivos.catalog.infrastructure.adapter.out.persistence;
 
 import jakarta.persistence.*;
 
-import lombok.*;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@lombok.Data
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
 @Entity
 @Table(name = "device_types")
 public class DeviceTypeJpaEntity {

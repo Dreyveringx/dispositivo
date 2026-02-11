@@ -5,10 +5,6 @@ import { ErrorService } from './error.service';
 import { ProblemDetail } from '../models/problem-detail.model';
 import { AppHttpError } from './http-error';
 
-/**
- * Intercepts HTTP errors, parses RFC 7807 ProblemDetail when present,
- * notifies ErrorService and rethrows AppHttpError so subscribers can still react.
- */
 export const problemDetailInterceptor: HttpInterceptorFn = (req, next) => {
   const errorService = inject(ErrorService);
 

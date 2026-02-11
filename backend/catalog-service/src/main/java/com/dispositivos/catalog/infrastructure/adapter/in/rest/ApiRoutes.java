@@ -1,8 +1,5 @@
 package com.dispositivos.catalog.infrastructure.adapter.in.rest;
 
-/**
- * Rutas REST del API de catálogo. Centralizadas para mantenibilidad y posible versionado.
- */
 public final class ApiRoutes {
 
     private ApiRoutes() {

@@ -6,10 +6,6 @@ import org.springframework.http.ProblemDetail;
 import java.net.URI;
 import java.util.Map;
 
-/**
- * Helper para construir ProblemDetail RFC 7807. Centraliza títulos y mensajes
- * usados por GlobalExceptionHandler sin duplicar lógica.
- */
 public final class ProblemDetailFactory {
 
     private static final String TITLE_NOT_FOUND = "Resource not found";

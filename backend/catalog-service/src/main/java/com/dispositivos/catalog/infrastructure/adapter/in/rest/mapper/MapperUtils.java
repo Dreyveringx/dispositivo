@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Utilidades compartidas para mappers REST dentro del catalog-service.
- * Evita duplicar la lógica de toResponseList (null-safe, stream).
- */
 public final class MapperUtils {
 
     private MapperUtils() {

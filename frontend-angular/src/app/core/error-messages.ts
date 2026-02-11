@@ -1,9 +1,5 @@
 import { ProblemDetail } from '../models/problem-detail.model';
 
-/**
- * Punto único para obtener mensaje de error mostrable al usuario (RFC 7807).
- * Usado por ErrorService y AppHttpError para evitar duplicar lógica.
- */
 export function getDisplayMessage(problem: ProblemDetail | null, fallbackStatus?: number): string {
   if (problem?.detail) return problem.detail;
   if (problem?.title) return problem.title;

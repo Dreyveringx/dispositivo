@@ -6,8 +6,6 @@ import { DeviceService } from '../../services/device.service';
 import { CatalogService } from '../../services/catalog.service';
 import { CommentService } from '../../services/comment.service';
 import { Device } from '../../models/device.model';
-import { Brand } from '../../models/brand.model';
-import { DeviceType } from '../../models/device-type.model';
 import { Comment } from '../../models/comment.model';
 
 @Component({

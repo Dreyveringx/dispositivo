@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.Data
 @Entity
 @Table(name = "devices")
 public class DeviceJpaEntity {
@@ -37,27 +38,4 @@ public class DeviceJpaEntity {
     @Column(name = "url", length = 500)
     private List<String> imageUrls = new ArrayList<>();
 
-    /** Getter defensivo: nunca devuelve null para evitar NPE en mappers. */
-    public List<String> getImageUrls() {
-        return imageUrls != null ? imageUrls : new ArrayList<>();
-    }
-
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls != null ? imageUrls : new ArrayList<>();
-    }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public Long getBrandId() { return brandId; }
-    public void setBrandId(Long brandId) { this.brandId = brandId; }
-    public Long getDeviceTypeId() { return deviceTypeId; }
-    public void setDeviceTypeId(Long deviceTypeId) { this.deviceTypeId = deviceTypeId; }
-    public LocalDate getReleaseDate() { return releaseDate; }
-    public void setReleaseDate(LocalDate releaseDate) { this.releaseDate = releaseDate; }
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

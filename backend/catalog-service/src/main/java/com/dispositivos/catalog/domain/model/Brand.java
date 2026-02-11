@@ -1,10 +1,8 @@
 package com.dispositivos.catalog.domain.model;
 
-import lombok.*;
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@lombok.Data
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
 public class Brand {
 
     private Long id;

@@ -6,9 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Puerto de entrada: casos de uso de dispositivos.
- */
 public interface DeviceUseCases {
 
     Device create(String name, String description, Long brandId, Long deviceTypeId,
@@ -16,9 +13,6 @@ public interface DeviceUseCases {
 
     List<Device> findAll();
 
-    /**
-     * Lista con filtros opcionales: nombre (búsqueda), brandId, deviceTypeId, orden por fecha.
-     */
     List<Device> findFiltered(String nameContains, Long brandId, Long deviceTypeId, boolean sortByReleaseDateDesc);
 
     Optional<Device> findById(Long id);

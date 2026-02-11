@@ -1,7 +1,3 @@
-/**
- * Base URLs and paths aligned with backend ApiRoutes.
- * One place to change when backend ports or base path change.
- */
 const DEVICE_API_BASE = 'http://localhost:8080/api';
 const CATALOG_API_BASE = 'http://localhost:8081/api';
 const COMMENT_API_BASE = 'http://localhost:8082/api';

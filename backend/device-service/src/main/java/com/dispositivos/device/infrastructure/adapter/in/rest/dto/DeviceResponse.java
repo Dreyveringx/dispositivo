@@ -1,12 +1,11 @@
 package com.dispositivos.device.infrastructure.adapter.in.rest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@lombok.Data
 @Schema(description = "Dispositivo expuesto en el API")
 public class DeviceResponse {
 

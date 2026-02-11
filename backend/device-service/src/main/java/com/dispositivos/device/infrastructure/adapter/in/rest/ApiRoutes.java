@@ -1,8 +1,5 @@
 package com.dispositivos.device.infrastructure.adapter.in.rest;
 
-/**
- * Rutas REST del API de dispositivos. Centralizadas para mantenibilidad y posible versionado.
- */
 public final class ApiRoutes {
 
     private ApiRoutes() {

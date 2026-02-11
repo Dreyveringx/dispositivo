@@ -1,11 +1,10 @@
 package com.dispositivos.comment.infrastructure.adapter.in.rest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
+@lombok.Data
 @Schema(description = "Comentario expuesto en el API")
 public class CommentResponse {
 
