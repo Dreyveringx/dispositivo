@@ -1,10 +1,13 @@
 package com.dispositivos.catalog.infrastructure.adapter.out.persistence;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@lombok.Data
-@lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "brands")
 public class BrandJpaEntity {

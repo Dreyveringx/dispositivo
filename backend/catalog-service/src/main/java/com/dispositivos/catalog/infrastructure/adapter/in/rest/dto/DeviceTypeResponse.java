@@ -1,8 +1,9 @@
 package com.dispositivos.catalog.infrastructure.adapter.in.rest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
-@lombok.Data
+@Data
 @Schema(description = "Tipo de dispositivo expuesto en el API")
 public class DeviceTypeResponse {
 

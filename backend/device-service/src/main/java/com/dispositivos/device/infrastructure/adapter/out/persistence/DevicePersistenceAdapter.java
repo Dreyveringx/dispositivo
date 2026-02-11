@@ -61,7 +61,7 @@ public class DevicePersistenceAdapter implements DeviceRepositoryPort {
         e.setDeviceTypeId(domain.getDeviceTypeId());
         e.setReleaseDate(domain.getReleaseDate());
         e.setImageUrl(domain.getImageUrl());
-        e.setImageUrls(domain.getImageUrls() != null ? domain.getImageUrls() : new ArrayList<>());
+        e.setImageUrls(nullSafeList(domain.getImageUrls()));
         return e;
     }
 
@@ -69,8 +69,7 @@ public class DevicePersistenceAdapter implements DeviceRepositoryPort {
         if (entity == null) {
             return null;
         }
-        List<String> urls = entity.getImageUrls();
-        List<String> safeUrls = urls != null ? new ArrayList<>(urls) : new ArrayList<>();
+        List<String> safeUrls = copyOrEmpty(entity.getImageUrls());
         return new Device(
                 entity.getId(),
                 entity.getName(),
@@ -81,5 +80,13 @@ public class DevicePersistenceAdapter implements DeviceRepositoryPort {
                 entity.getImageUrl(),
                 safeUrls
         );
+    }
+
+    private static List<String> nullSafeList(List<String> list) {
+        return list != null ? list : new ArrayList<>();
+    }
+
+    private static List<String> copyOrEmpty(List<String> list) {
+        return list != null ? new ArrayList<>(list) : new ArrayList<>();
     }
 }

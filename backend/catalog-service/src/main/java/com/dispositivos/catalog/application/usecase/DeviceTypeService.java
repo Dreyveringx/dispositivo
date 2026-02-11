@@ -4,17 +4,15 @@ import com.dispositivos.catalog.application.ports.in.DeviceTypeUseCases;
 import com.dispositivos.catalog.application.ports.out.DeviceTypeRepositoryPort;
 import com.dispositivos.catalog.domain.exception.ResourceNotFoundException;
 import com.dispositivos.catalog.domain.model.DeviceType;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class DeviceTypeService implements DeviceTypeUseCases {
 
     private final DeviceTypeRepositoryPort deviceTypeRepository;
-
-    public DeviceTypeService(DeviceTypeRepositoryPort deviceTypeRepository) {
-        this.deviceTypeRepository = deviceTypeRepository;
-    }
 
     @Override
     public DeviceType create(String name, String description) {

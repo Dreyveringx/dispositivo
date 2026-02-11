@@ -2,11 +2,13 @@ package com.dispositivos.device.infrastructure.adapter.out.persistence;
 
 import jakarta.persistence.*;
 
+import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@lombok.Data
+@Data
 @Entity
 @Table(name = "devices")
 public class DeviceJpaEntity {

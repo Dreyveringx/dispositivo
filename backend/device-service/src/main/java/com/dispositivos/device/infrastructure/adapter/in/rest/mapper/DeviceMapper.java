@@ -24,10 +24,12 @@ public final class DeviceMapper {
         dto.setDeviceTypeId(domain.getDeviceTypeId());
         dto.setReleaseDate(domain.getReleaseDate());
         dto.setImageUrl(domain.getImageUrl());
-        dto.setImageUrls(domain.getImageUrls() != null
-                ? List.copyOf(domain.getImageUrls())
-                : Collections.emptyList());
+        dto.setImageUrls(copyImageUrls(domain.getImageUrls()));
         return dto;
+    }
+
+    private static List<String> copyImageUrls(List<String> urls) {
+        return urls != null ? List.copyOf(urls) : Collections.emptyList();
     }
 
     public static List<DeviceResponse> toResponseList(List<Device> list) {

@@ -6,10 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
+import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.List;
 
-@lombok.Data
+@Data
 @Schema(description = "Datos para crear o actualizar un dispositivo")
 public class DeviceRequest {
 

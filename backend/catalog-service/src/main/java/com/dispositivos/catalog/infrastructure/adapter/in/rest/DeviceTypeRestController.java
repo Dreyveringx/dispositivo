@@ -4,6 +4,7 @@ import com.dispositivos.catalog.application.ports.in.DeviceTypeUseCases;
 import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.DeviceTypeRequest;
 import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.DeviceTypeResponse;
 import com.dispositivos.catalog.infrastructure.adapter.in.rest.mapper.DeviceTypeMapper;
+import com.dispositivos.catalog.infrastructure.config.ApiDoc;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,8 +29,8 @@ public class DeviceTypeRestController {
     @Operation(summary = "Crear tipo de dispositivo")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Tipo creado"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "400", description = ApiDoc.ERROR_400),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_GENERIC)
     })
     public ResponseEntity<DeviceTypeResponse> create(@Valid @RequestBody DeviceTypeRequest request) {
         var created =
@@ -50,7 +51,7 @@ public class DeviceTypeRestController {
     @Operation(summary = "Obtener tipo por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Tipo encontrado"),
-            @ApiResponse(responseCode = "404", description = "Tipo no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE_TYPE)
     })
     public ResponseEntity<DeviceTypeResponse> findById(@PathVariable Long id) {
         return deviceTypeUseCases.findById(id)
@@ -63,8 +64,8 @@ public class DeviceTypeRestController {
     @Operation(summary = "Actualizar tipo de dispositivo")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Tipo actualizado"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
-            @ApiResponse(responseCode = "404", description = "Tipo no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "400", description = ApiDoc.ERROR_400),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE_TYPE)
     })
     public ResponseEntity<DeviceTypeResponse> update(
             @PathVariable Long id,
@@ -78,7 +79,7 @@ public class DeviceTypeRestController {
     @Operation(summary = "Eliminar tipo de dispositivo")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Tipo eliminado"),
-            @ApiResponse(responseCode = "404", description = "Tipo no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE_TYPE)
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         deviceTypeUseCases.deleteById(id);

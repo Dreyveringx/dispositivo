@@ -1,9 +1,11 @@
 package com.dispositivos.device.infrastructure.adapter.in.rest;
 
+import com.dispositivos.device.application.ports.in.DeviceCommand;
 import com.dispositivos.device.application.ports.in.DeviceUseCases;
 import com.dispositivos.device.infrastructure.adapter.in.rest.dto.DeviceRequest;
 import com.dispositivos.device.infrastructure.adapter.in.rest.dto.DeviceResponse;
 import com.dispositivos.device.infrastructure.adapter.in.rest.mapper.DeviceMapper;
+import com.dispositivos.device.infrastructure.config.ApiDoc;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,19 +31,12 @@ public class DeviceRestController {
     @Operation(summary = "Crear dispositivo")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Dispositivo creado"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "400", description = ApiDoc.ERROR_400),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_GENERIC)
     })
     public ResponseEntity<DeviceResponse> create(@Valid @RequestBody DeviceRequest request) {
-        var created = deviceUseCases.create(
-                request.getName(),
-                request.getDescription(),
-                request.getBrandId(),
-                request.getDeviceTypeId(),
-                request.getReleaseDate(),
-                request.getImageUrl(),
-                request.getImageUrls()
-        );
+        DeviceCommand command = toCommand(request);
+        var created = deviceUseCases.create(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(DeviceMapper.toResponse(created));
     }
 
@@ -67,7 +62,7 @@ public class DeviceRestController {
     @Operation(summary = "Obtener dispositivo por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Dispositivo encontrado"),
-            @ApiResponse(responseCode = "404", description = "Dispositivo no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE)
     })
     public ResponseEntity<DeviceResponse> getById(@PathVariable Long id) {
         return deviceUseCases.findById(id)
@@ -80,14 +75,30 @@ public class DeviceRestController {
     @Operation(summary = "Actualizar dispositivo")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Dispositivo actualizado"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
-            @ApiResponse(responseCode = "404", description = "Dispositivo no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "400", description = ApiDoc.ERROR_400),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE)
     })
     public ResponseEntity<DeviceResponse> update(
             @PathVariable Long id,
             @Valid @RequestBody DeviceRequest request) {
-        var updated = deviceUseCases.update(
-                id,
+        DeviceCommand command = toCommand(request);
+        var updated = deviceUseCases.update(id, command);
+        return ResponseEntity.ok(DeviceMapper.toResponse(updated));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar dispositivo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Dispositivo eliminado"),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_DEVICE)
+    })
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        deviceUseCases.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    private static DeviceCommand toCommand(DeviceRequest request) {
+        return new DeviceCommand(
                 request.getName(),
                 request.getDescription(),
                 request.getBrandId(),
@@ -96,17 +107,5 @@ public class DeviceRestController {
                 request.getImageUrl(),
                 request.getImageUrls()
         );
-        return ResponseEntity.ok(DeviceMapper.toResponse(updated));
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar dispositivo")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Dispositivo eliminado"),
-            @ApiResponse(responseCode = "404", description = "Dispositivo no encontrado (RFC 7807 Problem Detail)")
-    })
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        deviceUseCases.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }

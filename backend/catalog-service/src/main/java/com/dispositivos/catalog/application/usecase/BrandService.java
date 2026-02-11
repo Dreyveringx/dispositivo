@@ -4,17 +4,15 @@ import com.dispositivos.catalog.application.ports.in.BrandUseCases;
 import com.dispositivos.catalog.application.ports.out.BrandRepositoryPort;
 import com.dispositivos.catalog.domain.exception.ResourceNotFoundException;
 import com.dispositivos.catalog.domain.model.Brand;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class BrandService implements BrandUseCases {
 
     private final BrandRepositoryPort brandRepository;
-
-    public BrandService(BrandRepositoryPort brandRepository) {
-        this.brandRepository = brandRepository;
-    }
 
     @Override
     public Brand create(String name, String description) {

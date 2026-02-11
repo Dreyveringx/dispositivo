@@ -1,13 +1,16 @@
 package com.dispositivos.device.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@lombok.Data
-@lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Device {
 
     private Long id;

@@ -3,8 +3,9 @@ package com.dispositivos.catalog.infrastructure.adapter.in.rest.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@lombok.Data
+@Data
 @Schema(description = "Datos para crear o actualizar una marca")
 public class BrandRequest {
 

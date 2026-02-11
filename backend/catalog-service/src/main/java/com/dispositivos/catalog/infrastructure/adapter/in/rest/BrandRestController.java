@@ -4,6 +4,7 @@ import com.dispositivos.catalog.application.ports.in.BrandUseCases;
 import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.BrandRequest;
 import com.dispositivos.catalog.infrastructure.adapter.in.rest.dto.BrandResponse;
 import com.dispositivos.catalog.infrastructure.adapter.in.rest.mapper.BrandMapper;
+import com.dispositivos.catalog.infrastructure.config.ApiDoc;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,8 +29,8 @@ public class BrandRestController {
     @Operation(summary = "Crear marca")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Marca creada"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "400", description = ApiDoc.ERROR_400),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_GENERIC)
     })
     public ResponseEntity<BrandResponse> create(@Valid @RequestBody BrandRequest request) {
         var created = brandUseCases.create(request.getName(), request.getDescription());
@@ -49,7 +50,7 @@ public class BrandRestController {
     @Operation(summary = "Obtener marca por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Marca encontrada"),
-            @ApiResponse(responseCode = "404", description = "Marca no encontrada (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_BRAND)
     })
     public ResponseEntity<BrandResponse> findById(@PathVariable Long id) {
         return brandUseCases.findById(id)
@@ -62,8 +63,8 @@ public class BrandRestController {
     @Operation(summary = "Actualizar marca")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Marca actualizada"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (RFC 7807 Problem Detail)"),
-            @ApiResponse(responseCode = "404", description = "Marca no encontrada (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "400", description = ApiDoc.ERROR_400),
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_BRAND)
     })
     public ResponseEntity<BrandResponse> update(
             @PathVariable Long id,
@@ -76,7 +77,7 @@ public class BrandRestController {
     @Operation(summary = "Eliminar marca")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Marca eliminada"),
-            @ApiResponse(responseCode = "404", description = "Marca no encontrada (RFC 7807 Problem Detail)")
+            @ApiResponse(responseCode = "404", description = ApiDoc.ERROR_404_BRAND)
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         brandUseCases.deleteById(id);
